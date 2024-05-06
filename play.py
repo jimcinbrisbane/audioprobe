@@ -1,7 +1,10 @@
 #play audio
 #update pip
-#python3 -m pip install --upgrade pip
-#pip3 install --upgrade wheel
-#pip3 install playsound
-from playsound import playsound
-playsound('./recording1.wav')
+#pip3 install pygame
+
+import pygame
+pygame.mixer.init()
+pygame.mixer.music.load('./recording1.wav')
+pygame.mixer.music.play()
+while pygame.mixer.music.get_busy() == True:
+    continue

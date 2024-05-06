@@ -2,6 +2,10 @@
 #pip install wavio
 #pip install scipy
 #pip install sounddevice
+#first if pi
+#sudo apt-get install libportaudio2
+#probe0@raspberrypi:~/audioprobe $ python -m venv env
+# source env/bin/activate 
 import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
@@ -10,8 +14,8 @@ import wavio as wv
 freq = 44100
 
 # Recording duration
-duration = 25
-print("start now 25s")
+duration = 10
+print("start now 10s")
 
 # Start recorder with the given values of 
 # duration and sample frequency
