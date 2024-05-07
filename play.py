@@ -10,3 +10,5 @@ def play():
     while pygame.mixer.music.get_busy() == True:
         continue
 
+play()
+

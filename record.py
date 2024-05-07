@@ -17,7 +17,7 @@ def record():
 
     # Recording duration
     duration = 10
-    print("start now 10s")
+    print("start now for 10s")
 
     # Start recorder with the given values of 
     # duration and sample frequency
@@ -25,5 +25,8 @@ def record():
                     samplerate=freq, channels=2)
     # Record audio for the given number of seconds
     sd.wait()
+    write("recording1.wav", freq, recording)
 
-    wv.write("recording1.wav", recording, freq, sampwidth=2)
+    #wv.write("recording1.wav", recording, freq, sampwidth=2)
+
+record()
