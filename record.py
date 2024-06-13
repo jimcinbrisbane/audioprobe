@@ -13,7 +13,7 @@ import wavio as wv
 def record():
     
     # Sampling frequency
-    freq = 44100
+    freq = 50000
 
     # Recording duration
     duration = 10
