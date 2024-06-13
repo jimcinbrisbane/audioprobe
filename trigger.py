@@ -3,15 +3,6 @@ import time
 import sounddevice as sd
 from scipy.io.wavfile import write
 
-# Define the GPIO pins
-touch_pin_record = 27
-touch_pin_play = 23
-
-# Set up the GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(touch_pin_record, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(touch_pin_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
 #play audio
 #update pip
 #pip3 install pygame
@@ -48,19 +39,34 @@ def record():
     write("recording1.wav", freq, recording)
     print("Recording stopped and saved to recording1.wav")
 
+
+
+
+import RPi.GPIO as GPIO
+import time
+
+# Set the GPIO mode
+GPIO.setmode(GPIO.BCM)
+
+# Set the pin number
+
+# Set the pin as input
+GPIO.setup(23, GPIO.IN)
+GPIO.setup(27, GPIO.IN)
+
 try:
     while True:
-        if GPIO.input(touch_pin_record) == GPIO.LOW:
-          print("Recording")
+        # Check if pressure is detected
+        if GPIO.input(23) == GPIO.HIGH:
+          print("record")
           record()
-            
-        if GPIO.input(touch_pin_play) == GPIO.LOW:
-          print("Play")
+        if GPIO.input(27) == GPIO.HIGH:
+          print("play")
           play()
-        time.sleep(0.1)  # Small delay to debounce button presses
+        
+        # Delay to prevent CPU hogging
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
-    print("Program terminated.")
-
-finally:
+    # Clean up GPIO settings
     GPIO.cleanup()
