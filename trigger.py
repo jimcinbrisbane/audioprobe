@@ -3,70 +3,66 @@ import time
 import sounddevice as sd
 from scipy.io.wavfile import write
 import numpy as np
-
-#play audio
-#update pip
-#pip3 install pygame
 import pygame
 
+# Constants
+RECORD_PIN = 27
+PLAY_PIN = 23
+SAMPLE_RATE = 48000
+FRAME_DURATION = 1  # in seconds
+FRAME_SIZE = SAMPLE_RATE * FRAME_DURATION
+
 def play():
-    print("Playback started...")
-    pygame.mixer.init()
-    pygame.mixer.music.load('./recording1.wav')
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy() == True:
-        continue
-    print("Playback finished.")
+    try:
+        print("Playback started...")
+        pygame.mixer.init()
+        pygame.mixer.music.load('./recording1.wav')
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            time.sleep(0.1)
+        print("Playback finished.")
+    except Exception as e:
+        print(f"An error occurred during playback: {e}")
 
 def record():
-    freq = 48000
+    try:
+        print("Recording started...")
+        recording = []
 
-    print("Recording started...")
-    
-    # Record audio while the button is pressed
-    recording = []
-    while GPIO.input(23) != GPIO.HIGH:
-        frame = sd.rec(50000, samplerate=freq, channels=2)
-        sd.wait()
-        recording.append(frame)
-    if recording:
-          # Convert list to numpy array
-          recording = np.concatenate(recording, axis=0)
-          
-          # Save the recording to a file
-          write("recording1.wav", 48000, recording)
-          print("Recording stopped and saved to recording1.wav")
-    else:
-          print("No recording made.")
-    
+        while GPIO.input(RECORD_PIN) != GPIO.HIGH:
+            frame = sd.rec(FRAME_SIZE, samplerate=SAMPLE_RATE, channels=2)
+            sd.wait()
+            recording.append(frame)
 
-
-
-import RPi.GPIO as GPIO
-import time
+        if recording:
+            recording = np.concatenate(recording, axis=0)
+            write("recording1.wav", SAMPLE_RATE, recording)
+            print("Recording stopped and saved to recording1.wav")
+        else:
+            print("No recording made.")
+    except Exception as e:
+        print(f"An error occurred during recording: {e}")
 
 # Set the GPIO mode
 GPIO.setmode(GPIO.BCM)
 
-# Set the pin number
-
 # Set the pin as input
-GPIO.setup(23, GPIO.IN)
-GPIO.setup(27, GPIO.IN)
+GPIO.setup(RECORD_PIN, GPIO.IN)
+GPIO.setup(PLAY_PIN, GPIO.IN)
 
 try:
     while True:
-        # Check if pressure is detected
-        if GPIO.input(27) == GPIO.HIGH:
-          print("record")
-          record()
-        if GPIO.input(23) == GPIO.HIGH:
-          print("play")
-          play()
-        
+        if GPIO.input(RECORD_PIN) == GPIO.HIGH:
+            print("Recording button pressed")
+            record()
+        elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
+            print("Playback button pressed")
+            play()
+
         # Delay to prevent CPU hogging
-        time.sleep(0.25)
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
     # Clean up GPIO settings
     GPIO.cleanup()
+    print("Program terminated and GPIO cleaned up.")
