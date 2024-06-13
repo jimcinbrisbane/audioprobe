@@ -37,13 +37,12 @@ def record():
     recording = []
 
     # Record audio while the button is pressed
-    while GPIO.input(touch_pin_record) == GPIO.LOW:
+    while GPIO.input(touch_pin_record) == GPIO.HIGH:
         frame = sd.rec(1, samplerate=freq, channels=2, dtype='int16')
         sd.wait()
         recording.append(frame)
     
-    # Concatenate all the recorded frames
-    recording = np.concatenate(recording, axis=0)
+
     
     # Save the recording to a file
     write("recording1.wav", freq, recording)
