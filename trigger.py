@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import sounddevice as sd
 from scipy.io.wavfile import write
+import numpy as np
 
 #play audio
 #update pip
@@ -24,16 +25,14 @@ def record():
 
     print("Recording started...")
     
-    # Start recorder with the given values of duration and sample frequency
     recording = []
-
-    # Record audio while the button is pressed
     while GPIO.input(27) == GPIO.HIGH:
-        frame = sd.rec(1, samplerate=freq, channels=2, dtype='int16')
+        frame = sd.rec(1024, samplerate=freq, channels=2, dtype='int16')
         sd.wait()
         recording.append(frame)
     
-
+    # Convert list to numpy array
+    recording = np.concatenate(recording, axis=0)
     
     # Save the recording to a file
     write("recording1.wav", freq, recording)
