@@ -4,7 +4,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 
 # Define the GPIO pins
-touch_pin_record = 22
+touch_pin_record = 27
 touch_pin_play = 23
 
 # Set up the GPIO
