@@ -54,10 +54,6 @@ def gpio_callback(channel):
     print("GPIO23 triggered! Saving audio...")
     save_audio(audio_buffer)
 
-# Add event detection on GPIO23
-GPIO.add_event_detect(23, GPIO.RISING, callback=gpio_callback, bouncetime=300)
-GPIO.add_event_detect(27, GPIO.RISING, callback=gpio_callback, bouncetime=300)
-
 #play audio
 #update pip
 #pip3 install pygame
