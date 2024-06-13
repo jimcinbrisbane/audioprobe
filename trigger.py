@@ -65,7 +65,7 @@ try:
           play()
         
         # Delay to prevent CPU hogging
-        time.sleep(0.5)
+        time.sleep(1)
 
 except KeyboardInterrupt:
     # Clean up GPIO settings
