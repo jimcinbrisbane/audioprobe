@@ -37,7 +37,7 @@ def record():
     recording = []
 
     # Record audio while the button is pressed
-    while GPIO.input(touch_pin_record) == GPIO.HIGH:
+    while GPIO.input(touch_pin_record) == GPIO.LOW:
         frame = sd.rec(1, samplerate=freq, channels=2, dtype='int16')
         sd.wait()
         recording.append(frame)
@@ -50,11 +50,11 @@ def record():
 
 try:
     while True:
-        if GPIO.input(touch_pin_record) == GPIO.HIGH:
+        if GPIO.input(touch_pin_record) == GPIO.LOW:
           print("Recording")
           record()
             
-        if GPIO.input(touch_pin_play) == GPIO.HIGH:
+        if GPIO.input(touch_pin_play) == GPIO.LOW:
           print("Play")
           play()
         time.sleep(0.1)  # Small delay to debounce button presses
