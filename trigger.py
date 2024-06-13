@@ -26,7 +26,7 @@ def record():
     
     # Record audio while the button is pressed
     recording = []
-    while GPIO.input(23) == GPIO.HIGH:
+    while GPIO.input(27) == GPIO.HIGH:
         frame = sd.rec(1024, samplerate=freq, channels=2, dtype='int16')
         sd.wait()
         recording.append(frame)
