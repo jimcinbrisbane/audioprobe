@@ -19,7 +19,7 @@ def play():
     print("Playback finished.")
 
 def record():
-    freq = 50000
+    freq = 100000
 
     print("Recording started...")
     
