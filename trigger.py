@@ -29,7 +29,7 @@ def record():
         print("Recording started...")
         recording = []
 
-        while GPIO.input(RECORD_PIN) != GPIO.HIGH:
+        while GPIO.input(PLAY_PIN) != GPIO.HIGH:
             frame = sd.rec(FRAME_SIZE, samplerate=SAMPLE_RATE, channels=2)
             sd.wait()
             recording.append(frame)
