@@ -1,58 +1,8 @@
-import sounddevice as sd
-import numpy as np
 import RPi.GPIO as GPIO
 import time
-import wave
-
-# GPIO setup
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(23, GPIO.IN)
-GPIO.setup(27, GPIO.IN)
-
-# Audio recording settings
-samplerate = 44100  # Sample rate
-channels = 2       # Stereo recording
-duration = 10      # Duration of the recording in seconds
-
-# Buffer to store audio data
-audio_buffer = []
-
-# Callback function to save audio
-def save_audio(audio_data, filename="recording1.wav"):
-    # Convert the audio buffer to numpy array
-    audio_data = np.concatenate(audio_data, axis=0)
-
-    # Save the audio data to a WAV file
-    with wave.open(filename, 'wb') as wf:
-        wf.setnchannels(channels)
-        wf.setsampwidth(2)  # 16-bit audio
-        wf.setframerate(samplerate)
-        wf.writeframes(audio_data.tobytes())
-
-# Function to record audio
-def record_audio():
-    print("Recording started...")
-    audio_buffer.clear()
-    start_time = time.time()
-    
-    def callback(indata, frames, time, status):
-        if status:
-            print(status)
-        audio_buffer.append(indata.copy())
-
-        # Check if the recording duration has been reached
-        if time.time() - start_time > duration:
-            sd.stop()
-
-    # Start recording
-    with sd.InputStream(samplerate=samplerate, channels=channels, callback=callback):
-        sd.sleep(duration * 1000)
-    print("Recording stopped.")
-
-# Callback function to handle GPIO trigger
-def gpio_callback(channel):
-    print("GPIO23 triggered! Saving audio...")
-    save_audio(audio_buffer)
+import sounddevice as sd
+from scipy.io.wavfile import write
+import numpy as np
 
 #play audio
 #update pip
@@ -69,16 +19,50 @@ def play():
     print("Playback finished.")
 
 
+def record():
+    freq = 44100
 
+    print("Recording started...")
+    
+    # Record audio while the button is pressed
+    recording = []
+    while GPIO.input(23) != GPIO.HIGH:
+        frame = sd.rec(1024, samplerate=freq, channels=2, dtype='int16')
+        sd.wait()
+        recording.append(frame)
+    
+    # Check if any frames were recorded
+    if recording:
+        # Convert list to numpy array
+        recording = np.concatenate(recording, axis=0)
+        
+        # Save the recording to a file
+        write("recording1.wav", freq, recording)
+        print("Recording stopped and saved to recording1.wav")
+    else:
+        print("No recording made.")
+
+
+
+import RPi.GPIO as GPIO
+import time
+
+# Set the GPIO mode
+GPIO.setmode(GPIO.BCM)
+
+# Set the pin number
+
+# Set the pin as input
+GPIO.setup(23, GPIO.IN)
+GPIO.setup(27, GPIO.IN)
 
 try:
     while True:
         # Check if pressure is detected
         if GPIO.input(27) == GPIO.HIGH:
           print("record")
-          record_audio()
+          record()
         if GPIO.input(23) == GPIO.HIGH:
-          save_audio()
           print("play")
           play()
         
