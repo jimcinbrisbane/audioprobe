@@ -20,24 +20,27 @@ def play():
 
 
 def record():
-    # Sampling frequency
     freq = 44100
 
     print("Recording started...")
     
+    # Record audio while the button is pressed
     recording = []
-    while GPIO.input(27) == GPIO.HIGH:
+    while GPIO.input(27) == GPIO.LOW:
         frame = sd.rec(1024, samplerate=freq, channels=2, dtype='int16')
         sd.wait()
         recording.append(frame)
     
-    # Convert list to numpy array
-    recording = np.concatenate(recording, axis=0)
-    
-    # Save the recording to a file
-    write("recording1.wav", freq, recording)
-    print("Recording stopped and saved to recording1.wav")
-
+    # Check if any frames were recorded
+    if recording:
+        # Convert list to numpy array
+        recording = np.concatenate(recording, axis=0)
+        
+        # Save the recording to a file
+        write("recording1.wav", freq, recording)
+        print("Recording stopped and saved to recording1.wav")
+    else:
+        print("No recording made.")
 
 
 
