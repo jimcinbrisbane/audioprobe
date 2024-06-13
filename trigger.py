@@ -52,9 +52,12 @@ def record():
 try:
     while True:
         if GPIO.input(touch_pin_record) == GPIO.LOW:
-            record()
+          print("Recording")
+          record()
+            
         if GPIO.input(touch_pin_play) == GPIO.LOW:
-            play()
+          print("Recording")
+          play()
         time.sleep(0.1)  # Small delay to debounce button presses
 
 except KeyboardInterrupt:
