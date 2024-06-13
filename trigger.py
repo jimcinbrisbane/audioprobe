@@ -59,10 +59,10 @@ GPIO.setup(27, GPIO.IN)
 try:
     while True:
         # Check if pressure is detected
-        if GPIO.input(23) == GPIO.HIGH:
+        if GPIO.input(27) == GPIO.HIGH:
           print("record")
           record()
-        if GPIO.input(27) == GPIO.HIGH:
+        if GPIO.input(23) == GPIO.HIGH:
           print("play")
           play()
         
