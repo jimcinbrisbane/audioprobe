@@ -34,7 +34,7 @@ def record():
           recording = np.concatenate(recording, axis=0)
           
           # Save the recording to a file
-          write("recording1.wav", 44100, recording)
+          write("recording1.wav", 48000, recording)
           print("Recording stopped and saved to recording1.wav")
     else:
           print("No recording made.")
