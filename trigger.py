@@ -20,14 +20,14 @@ def play():
 
 recording = []
 def record():
-    freq = 48000
+    freq = 50000
 
     print("Recording started...")
     
     # Record audio while the button is pressed
     recording = []
     while GPIO.input(23) != GPIO.HIGH:
-        frame = sd.rec(48000, samplerate=freq, channels=2)
+        frame = sd.rec(5000, samplerate=freq, channels=2)
         sd.wait()
         recording.append(frame)
     if recording:
@@ -67,7 +67,7 @@ try:
           play()
         
         # Delay to prevent CPU hogging
-        time.sleep(1)
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
     # Clean up GPIO settings
