@@ -68,39 +68,24 @@
 import RPi.GPIO as GPIO
 import time
 
-# Define the GPIO pins
-touch_pin_record = 22
-touch_pin_play = 23
-
-# Set up the GPIO
+# Set the GPIO mode
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(touch_pin_record, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(touch_pin_play, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-def record():
-    print("Recording started...")
-    # Add the code to start recording here
-    while GPIO.input(touch_pin_record) == GPIO.LOW:
-        time.sleep(0.1)  # Keeps recording while the button is pressed
-    print("Recording stopped.")
-    # Add the code to stop recording here
+# Set the pin number
+pin = 23
 
-def play():
-    print("Playback started...")
-    # Add the code to start playback here
-    time.sleep(2)  # Simulate playback duration
-    print("Playback finished.")
+# Set the pin as input
+GPIO.setup(pin, GPIO.IN)
 
 try:
     while True:
-        if GPIO.input(touch_pin_record) == GPIO.LOW:
-            record()
-        if GPIO.input(touch_pin_play) == GPIO.LOW:
-            play()
-        time.sleep(0.1)  # Small delay to debounce button presses
+        # Check if pressure is detected
+        if GPIO.input(pin) == GPIO.HIGH:
+            print("Pressure detected")
+        
+        # Delay to prevent CPU hogging
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
-    print("Program terminated.")
-
-finally:
+    # Clean up GPIO settings
     GPIO.cleanup()
