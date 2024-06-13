@@ -9,7 +9,7 @@ import pygame
 RECORD_PIN = 27
 PLAY_PIN = 23
 SAMPLE_RATE = 48000
-FRAME_DURATION = 1.1  # in seconds
+FRAME_DURATION = 2  # in seconds
 FRAME_SIZE = SAMPLE_RATE * FRAME_DURATION
 
 def play():
