@@ -69,8 +69,8 @@ import RPi.GPIO as GPIO
 import time
 
 # Define the GPIO pins
-touch_pin_record = 17
-touch_pin_play = 24
+touch_pin_record = 22
+touch_pin_play = 23
 
 # Set up the GPIO
 GPIO.setmode(GPIO.BCM)
