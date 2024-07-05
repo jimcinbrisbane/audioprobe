@@ -76,8 +76,14 @@ try:
             x = mycol.insert_one(mydict)
             upload_blob("audioprobe", './recording1.wav', filename)
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
-            print("Incoming msg")
-            play()
+            recent_entry = collection.find_one(
+                {"probe": "probe0"},  # Query to match documents with "probe": "probe0"
+                sort=[("datetime_field", -1)]  # Sort by the datetime field in descending order
+            )
+
+            # Extract the file name from the recent entry
+            file_name = recent_entry['file_name'] if recent_entry else None
+            print(file_name)
         elif GPIO.input(STOP) == GPIO.HIGH:
             print("Audio play back, this is what you sent")
             play()
