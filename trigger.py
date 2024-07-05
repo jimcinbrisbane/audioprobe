@@ -4,6 +4,7 @@ import sounddevice as sd
 from scipy.io.wavfile import write
 import numpy as np
 import pygame
+from send import upload_blob 
 
 # Constants
 STOP = 18
@@ -52,6 +53,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(RECORD_PIN, GPIO.IN)
 GPIO.setup(PLAY_PIN, GPIO.IN)
 GPIO.setup(STOP, GPIO.IN)
+import datetime
 
 try:
     while True:
@@ -59,11 +61,13 @@ try:
             print("Recording button pressed")
             record()
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
-            print("Playback button pressed")
+            print("Incoming msg")
             play()
         elif GPIO.input(STOP) == GPIO.HIGH:
-            print("Incoming Playback button pressed")
+            print("Audio play back, this is what you sent")
             play()
+            upload_blob("audioprobe", './recording1.wav', str(datetime.datetime.now())+".wav")
+            #send()
 
         # Delay to prevent CPU hogging
         time.sleep(0.1)

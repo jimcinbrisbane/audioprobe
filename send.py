@@ -34,7 +34,5 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
     print(
         f"File {source_file_name} uploaded to {destination_blob_name}."
     )
-import datetime
 
-upload_blob("audioprobe", './recording1.wav', str(datetime.datetime.now())+".wav")
 
