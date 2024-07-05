@@ -76,7 +76,7 @@ try:
             x = mycol.insert_one(mydict)
             upload_blob("audioprobe", './recording1.wav', filename)
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
-            recent_entry = collection.find_one(
+            recent_entry = mycol.find_one(
                 {"probe": "probe0"},  # Query to match documents with "probe": "probe0"
                 sort=[("datetime_field", -1)]  # Sort by the datetime field in descending order
             )
