@@ -99,16 +99,18 @@ try:
 
             # Extract the file name from the recent entry
             datetime_field = recent_entry['datetime_field'] if recent_entry else None
-            if old_file_name is not datetime_field:
-                filename = datetime_field
-                download_wav_file(filename)
-                old_file_name = datetime_field
-            else:
+            
+            if old_file_name is datetime_field:
+                print("no new msg")
                 pygame.mixer.init()
                 pygame.mixer.music.load('./download.wav')
                 pygame.mixer.music.play()
                 while pygame.mixer.music.get_busy() == True:
                     continue
+            elif old_file_name is not datetime_field:
+                filename = datetime_field
+                download_wav_file(filename)
+                old_file_name = datetime_field
             
         elif GPIO.input(STOP) == GPIO.HIGH:
             print("Audio play back, this is what you sent")
