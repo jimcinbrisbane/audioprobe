@@ -5,7 +5,6 @@ from scipy.io.wavfile import write
 import numpy as np
 import pygame
 from send import upload_blob 
-from getfile import download_blob
 # Constants
 STOP = 18
 RECORD_PIN = 27
@@ -59,6 +58,18 @@ myclient = pymongo.MongoClient("mongodb+srv://probe0:probe0@audioprobe.yoroiqf.m
 
 mydb = myclient["audioprobe"]
 mycol = mydb["audioprobe"]
+old_file_name = " "
+
+import requests
+
+def download_wav_file(url, filename="./download.wav"):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(filename, 'wb') as file:
+            file.write(response.content)
+        print(f"File downloaded successfully as {filename}")
+    else:
+        print(f"Failed to download file. HTTP Status code: {response.status_code}")
 
 
 
@@ -82,14 +93,17 @@ try:
             )
 
             # Extract the file name from the recent entry
-            datetime_field = recent_entry['datetime_field'] if recent_entry else None
-            print(datetime_field)
-            download_blob("audioprobe", f"{datetime_field}.wav", "download.wav")
-            pygame.mixer.init()
-            pygame.mixer.music.load('./download.wav')
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
+            file_name = recent_entry['file_name'] if recent_entry else None
+            print(file_name)
+            if old_file_name is not filename:
+                download_wav_file(file_name)
+            else:
+                pygame.mixer.init()
+                pygame.mixer.music.load('./download.wav')
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy() == True:
+                    continue
+            
         elif GPIO.input(STOP) == GPIO.HIGH:
             print("Audio play back, this is what you sent")
             play()
