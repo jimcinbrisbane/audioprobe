@@ -67,7 +67,7 @@ import requests
 
 def download_wav_file(filename):
     print("filename")
-    download_blob("audioprobe", f"{filename}.wav", "download.wav")    
+    download_blob("audioprobe", f"{filename}", "download.wav")    
     pygame.mixer.init()
     pygame.mixer.music.load('./download.wav')
     pygame.mixer.music.play()
