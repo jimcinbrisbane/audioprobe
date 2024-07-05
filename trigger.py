@@ -6,8 +6,8 @@ import numpy as np
 import pygame
 from send import upload_blob 
 from getfile import download_blob
-import os
-os.environ.setdefault("GCLOUD_PROJECT", "audioprobe")
+#import os
+#os.environ.setdefault("GCLOUD_PROJECT", "audioprobe")
 
 # Constants
 STOP = 18
