@@ -6,8 +6,7 @@ import numpy as np
 import pygame
 from send import upload_blob 
 from getfile import download_blob
-#import os
-#os.environ.setdefault("GCLOUD_PROJECT", "audioprobe")
+
 
 # Constants
 STOP = 18
@@ -67,7 +66,7 @@ old_file_name = " "
 import requests
 
 def download_wav_file(filename):
-    download_blob("audioprobe", filename, "download.wav")
+    download_blob(filename)
     pygame.mixer.init()
     pygame.mixer.music.load('./download.wav')
     pygame.mixer.music.play()
