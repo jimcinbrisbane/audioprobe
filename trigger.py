@@ -95,10 +95,12 @@ try:
             )
 
             # Extract the file name from the recent entry
-            file_name = recent_entry['file_name'] if recent_entry else None
-            print(file_name)
-            if old_file_name is not file_name:
-                download_wav_file(file_name)
+            datetime_field = recent_entry['datetime_field'] if recent_entry else None
+            print(datetime_field)
+            if old_file_name is not datetime_field:
+                filename = datetime_field + ".wav"
+                download_wav_file(filename)
+                old_file_name = datetime_field
             else:
                 pygame.mixer.init()
                 pygame.mixer.music.load('./download.wav')
