@@ -6,7 +6,7 @@ import numpy as np
 import pygame
 
 # Constants
-RM_PLAY_PIN = 18
+STOP = 18
 RECORD_PIN = 27
 PLAY_PIN = 23
 SAMPLE_RATE = 48000
@@ -30,7 +30,7 @@ def record():
         print("Recording started...")
         recording = []
 
-        while GPIO.input(PLAY_PIN) != GPIO.HIGH:
+        while GPIO.input(STOP) != GPIO.HIGH:
             frame = sd.rec(FRAME_SIZE, samplerate=SAMPLE_RATE, channels=2)
             sd.wait()
             recording.append(frame)
@@ -50,7 +50,7 @@ GPIO.setmode(GPIO.BCM)
 # Set the pin as input
 GPIO.setup(RECORD_PIN, GPIO.IN)
 GPIO.setup(PLAY_PIN, GPIO.IN)
-GPIO.setup(RM_PLAY_PIN, GPIO.IN)
+GPIO.setup(STOP, GPIO.IN)
 
 try:
     while True:
@@ -60,7 +60,7 @@ try:
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
             print("Playback button pressed")
             play()
-        elif GPIO.input(RM_PLAY_PIN) == GPIO.HIGH:
+        elif GPIO.input(STOP) == GPIO.HIGH:
             print("Incoming Playback button pressed")
             play()
 
