@@ -30,11 +30,13 @@ def record():
         print("Recording started...")
         recording = []
 
+        # Record until the STOP button is pressed
         while GPIO.input(STOP) != GPIO.HIGH:
             frame = sd.rec(FRAME_SIZE, samplerate=SAMPLE_RATE, channels=2)
-            sd.wait()
+            sd.wait()  # Wait until the frame is recorded
             recording.append(frame)
 
+        # Concatenate all recorded frames into a single array
         if recording:
             recording = np.concatenate(recording, axis=0)
             write("recording1.wav", SAMPLE_RATE, recording)
@@ -43,7 +45,6 @@ def record():
             print("No recording made.")
     except Exception as e:
         print(f"An error occurred during recording: {e}")
-
 # Set the GPIO mode
 GPIO.setmode(GPIO.BCM)
 
