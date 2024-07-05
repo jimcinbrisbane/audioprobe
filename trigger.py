@@ -54,13 +54,29 @@ GPIO.setup(RECORD_PIN, GPIO.IN)
 GPIO.setup(PLAY_PIN, GPIO.IN)
 GPIO.setup(STOP, GPIO.IN)
 import datetime
+import pymongo
+myclient = pymongo.MongoClient("mongodb+srv://probe0:probe0@audioprobe.yoroiqf.mongodb.net/?retryWrites=true&w=majority&appName=audioprobe")
+
+mydb = myclient["audioprobe"]
+mycol = mydb["audioprobe"]
+
+
 
 try:
     while True:
         if GPIO.input(RECORD_PIN) == GPIO.HIGH:
             print("Recording button pressed")
-            record()
-            upload_blob("audioprobe", './recording1.wav', str(datetime.datetime.now())+".wav")
+            r# The `record()` function is responsible for recording audio input until the STOP button
+            # is pressed. After recording is stopped, it saves the recorded audio as a WAV file named
+            # "recording1.wav".
+            ecord()
+            filename = str(datetime.datetime.now()) + ".wav"
+            mydict = { 
+                "probe": "probe0", 
+                "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}" 
+            }
+            x = mycol.insert_one(mydict)
+            upload_blob("audioprobe", './recording1.wav', filename)
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
             print("Incoming msg")
             play()
