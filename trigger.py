@@ -60,15 +60,13 @@ try:
         if GPIO.input(RECORD_PIN) == GPIO.HIGH:
             print("Recording button pressed")
             record()
+            upload_blob("audioprobe", './recording1.wav', str(datetime.datetime.now())+".wav")
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
             print("Incoming msg")
             play()
         elif GPIO.input(STOP) == GPIO.HIGH:
             print("Audio play back, this is what you sent")
             play()
-            upload_blob("audioprobe", './recording1.wav', str(datetime.datetime.now())+".wav")
-            #send()
-
         # Delay to prevent CPU hogging
         time.sleep(0.1)
 
