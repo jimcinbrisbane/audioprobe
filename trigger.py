@@ -100,6 +100,8 @@ try:
             # Extract the file name from the recent entry
             datetime_field = recent_entry['datetime_field'] if recent_entry else None
             print(old_file_name, "old file name")
+            print(old_file_name == datetime_field)
+            print(datetime_field, 'datetime field')
             if old_file_name == datetime_field:
                 print("no new msg")
                 pygame.mixer.init()
