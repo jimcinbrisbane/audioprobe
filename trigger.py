@@ -66,10 +66,7 @@ try:
     while True:
         if GPIO.input(RECORD_PIN) == GPIO.HIGH:
             print("Recording button pressed")
-            r# The `record()` function is responsible for recording audio input until the STOP button
-            # is pressed. After recording is stopped, it saves the recorded audio as a WAV file named
-            # "recording1.wav".
-            ecord()
+            record()
             filename = str(datetime.datetime.now()) + ".wav"
             mydict = { 
                 "probe": "probe0", 
