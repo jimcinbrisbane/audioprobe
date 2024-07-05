@@ -67,7 +67,7 @@ import requests
 
 def download_wav_file(filename):
     print(filename)
-    download_blob("audioprobe", "2024-07-05 23:12:54.506713", "download.wav")    
+    download_blob("audioprobe", filename, "download.wav")    
     pygame.mixer.init()
     pygame.mixer.music.load('./download.wav')
     pygame.mixer.music.play()
