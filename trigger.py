@@ -67,10 +67,11 @@ try:
         if GPIO.input(RECORD_PIN) == GPIO.HIGH:
             print("Recording button pressed")
             record()
-            filename = str(datetime.datetime.now()) + ".wav"
+            filename = str(datetime.datetime.now())
             mydict = { 
                 "probe": "probe0", 
-                "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}" 
+                "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}.wav",
+                'datetime_field': filename 
             }
             x = mycol.insert_one(mydict)
             upload_blob("audioprobe", './recording1.wav', filename)
