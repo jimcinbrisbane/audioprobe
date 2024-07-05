@@ -86,7 +86,7 @@ try:
             filename = str(datetime.datetime.now())
             mydict = { 
                 "probe": "probe0", 
-                "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}.wav",
+                "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}",
                 'datetime_field': filename 
             }
             x = mycol.insert_one(mydict)
@@ -100,7 +100,7 @@ try:
             # Extract the file name from the recent entry
             datetime_field = recent_entry['datetime_field'] if recent_entry else None
             if old_file_name is not datetime_field:
-                filename = datetime_field + ".wav"
+                filename = datetime_field
                 download_wav_file(filename)
                 old_file_name = datetime_field
             else:
