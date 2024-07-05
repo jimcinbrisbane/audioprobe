@@ -68,8 +68,15 @@ def download_wav_file(url, filename="./download.wav"):
         with open(filename, 'wb') as file:
             file.write(response.content)
         print(f"File downloaded successfully as {filename}")
+        pygame.mixer.init()
+        pygame.mixer.music.load('./download.wav')
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
     else:
         print(f"Failed to download file. HTTP Status code: {response.status_code}")
+        old_file_name = " "
+
 
 
 
