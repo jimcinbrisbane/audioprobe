@@ -62,20 +62,14 @@ old_file_name = " "
 
 import requests
 
-def download_wav_file(url, filename="./download.wav"):
-    response = requests.get(url)
-    if response.status_code == 200:
-        with open(filename, 'wb') as file:
-            file.write(response.content)
-        print(f"File downloaded successfully as {filename}")
-        pygame.mixer.init()
-        pygame.mixer.music.load('./download.wav')
-        pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy() == True:
-            continue
-    else:
-        print(f"Failed to download file. HTTP Status code: {response.status_code}")
-        old_file_name = " "
+def download_wav_file(filename):
+    download_blob("audioprobe", filename, "download.wav")
+    pygame.mixer.init()
+    pygame.mixer.music.load('./download.wav')
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
+
 
 
 
