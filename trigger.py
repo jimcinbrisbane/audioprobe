@@ -99,7 +99,6 @@ try:
 
             # Extract the file name from the recent entry
             datetime_field = recent_entry['datetime_field'] if recent_entry else None
-            print(datetime_field)
             if old_file_name is not datetime_field:
                 filename = datetime_field + ".wav"
                 download_wav_file(filename)
