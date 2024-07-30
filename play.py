@@ -11,3 +11,4 @@ def play():
         continue
 
 
+play()
