@@ -20,4 +20,55 @@ deploy the device into
 14. you probably need gcp https://cloud.google.com/sdk/docs/install-sdk#linux
 15. since we're installing it on pi make sure you're downloading google-cloud-cli-linux-arm.tar.gz because pi is arm-based
 16. install MongoDB python -m pip install pymongo
-17. set up adc https://cloud.google.com/docs/authentication/external/set-up-adc 
+17. set up adc https://cloud.google.com/docs/authentication/external/set-up-adc
+18. set volume to a good range, like "amixer set Master 78%"
+19. either run via python trigger.py or try setting up auto start
+
+
+## set up auto start
+1.  sudo nano /usr/local/bin/autostart.sh
+
+#!/bin/bash
+cd /home/probe0/audioprobe
+# Configure ALSA defaults
+echo -e "defaults.pcm.card 1\ndefaults.ctl.card 1" > /etc/asound.conf
+
+# Ensure user permissions for audio
+sudo usermod -aG audio $USER
+
+# Start PulseAudio (if needed)
+pulseaudio --start
+
+# Activate the virtual environment
+source /home/probe0/audioprobe/env/bin/activate
+
+# Set the SDL audio driver to ALSA
+export SDL_AUDIODRIVER=alsa
+export GOOGLE_APPLICATION_CREDENTIALS="/home/probe0/audioprobe/crafty-shield-267206-fd4e23b40aa7.json" 
+#depends on your device name, where you set up the git and where you hide the JSON file for your GCP project
+python trigger.py
+
+3. sudo chmod +x /usr/local/bin/autostart.sh
+
+4. sudo nano /etc/systemd/system/autostart.service
+[Unit]
+Description=Run autostart script on network connection
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/autostart.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=network-online.target
+
+5. sudo systemctl enable autostart.service
+6. sudo systemctl start autostart.service to see if it start
+7. then sudo reboot
+8. gg
+
+
+
+
+
