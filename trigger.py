@@ -102,7 +102,8 @@ try:
             GPIO.output(YELLOW_PIN, GPIO.HIGH)
             filename = str(datetime.datetime.now())
             mydict = { 
-                "probe": "probe0", 
+                "probe": "probe0",# if probe0
+                #"probe": "probe1", if probe1
                 "file_name": f"https://storage.cloud.google.com/audioprobe/{filename}",
                 'datetime_field': filename 
             }
@@ -112,7 +113,8 @@ try:
         elif GPIO.input(PLAY_PIN) == GPIO.HIGH:
             GPIO.output(YELLOW_PIN, GPIO.HIGH)
             recent_entry = mycol.find_one(
-                {"probe": "probe0"},  # Query to match documents with "probe": "probe0"
+                #{"probe": "probe0"},  # if probe1 Query to match documents with "probe": "probe0"
+                {"probe": "probe1"},  if probe0 find probe1 entry
                 sort=[("datetime_field", -1)]  # Sort by the datetime field in descending order
             )
 
