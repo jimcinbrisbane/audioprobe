@@ -157,4 +157,4 @@ If accessing via SSH, make sure to set WiFi and username/password before using R
 - Make sure to adjust paths and filenames according to your specific setup.
 - Ensure all required dependencies and permissions are correctly set up.
 
-GG (Good Game!)
+GG
