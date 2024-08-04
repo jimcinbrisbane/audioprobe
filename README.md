@@ -1,74 +1,160 @@
-# audioprobe
-probe designed for my master's thesis
 
-deploy the device into
-1. if accessing via SSH make sure to set wifi and username pw before using Raspberry Pi Imager
-2. clone using ssh
-   see https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux
-   and https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-   then use
-3. git clone git@github.com:jimcinbrisbane/audioprobe.git
-4. cd audioprobe
-5. create virtual env using python3 -m venv audioprobe
-6. use it  source ./env/bin/activate
-8. test your speakers using python play.py
-9. download the mic port using "sudo apt-get install libportaudio2"
-10. set volume  "amixer sset Master 80%"
-11. test your mic using python record.py
-12. install the package using python -m pip install sounddevice
-13. ensure google cloud is set up in your pi, see https://cloud.google.com/python/docs/setup#linux
-14. you probably need gcp https://cloud.google.com/sdk/docs/install-sdk#linux
-15. since we're installing it on pi make sure you're downloading google-cloud-cli-linux-arm.tar.gz because pi is arm-based
-16. install MongoDB python -m pip install pymongo
-17. set up adc https://cloud.google.com/docs/authentication/external/set-up-adc
-18. set volume to a good range, like "amixer set Master 78%"
-19. either run via python trigger.py or try setting up auto start
+# AudioProbe
 
+This probe was designed for my master's thesis.
 
-## set up auto start
-1.  sudo nano /usr/local/bin/autostart.sh
+## Deployment
 
-#!/bin/bash
-cd /home/probe0/audioprobe
-# Configure ALSA defaults
-echo -e "defaults.pcm.card 1\ndefaults.ctl.card 1" > /etc/asound.conf
+Deploy the device as follows:
 
-# Ensure user permissions for audio
-sudo usermod -aG audio $USER
+### Setting up WiFi and SSH
+If accessing via SSH, make sure to set WiFi and username/password before using Raspberry Pi Imager.
 
-# Start PulseAudio (if needed)
-pulseaudio --start
+### Cloning the Repository
+1. Generate a new SSH key and add it to the SSH agent:
+   - [Generating a new SSH key and adding it to the SSH agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=linux)
+   - [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+   
+2. Clone the repository:
+   \`\`\`bash
+   git clone git@github.com:jimcinbrisbane/audioprobe.git
+   cd audioprobe
+   \`\`\`
 
-# Activate the virtual environment
-source /home/probe0/audioprobe/env/bin/activate
+### Creating and Activating Virtual Environment
+1. Create a virtual environment:
+   \`\`\`bash
+   python3 -m venv audioprobe
+   \`\`\`
 
-# Set the SDL audio driver to ALSA
-export SDL_AUDIODRIVER=alsa
-export GOOGLE_APPLICATION_CREDENTIALS="/home/probe0/audioprobe/crafty-shield-267206-fd4e23b40aa7.json" 
-#depends on your device name, where you set up the git and where you hide the JSON file for your GCP project
-python trigger.py
+2. Activate the virtual environment:
+   \`\`\`bash
+   source ./env/bin/activate
+   \`\`\`
 
-3. sudo chmod +x /usr/local/bin/autostart.sh
+### Testing and Setup
+1. Test your speakers:
+   \`\`\`bash
+   python play.py
+   \`\`\`
 
-4. sudo nano /etc/systemd/system/autostart.service
-[Unit]
-Description=Run autostart script on network connection
-After=network-online.target
+2. Download the mic port:
+   \`\`\`bash
+   sudo apt-get install libportaudio2
+   \`\`\`
 
-[Service]
-Type=oneshot
-ExecStart=/usr/local/bin/autostart.sh
-RemainAfterExit=true
+3. Set volume:
+   \`\`\`bash
+   amixer sset Master 80%
+   \`\`\`
 
-[Install]
-WantedBy=network-online.target
+4. Test your mic:
+   \`\`\`bash
+   python record.py
+   \`\`\`
 
-5. sudo systemctl enable autostart.service
-6. sudo systemctl start autostart.service to see if it start
-7. then sudo reboot
-8. gg
+### Installing Dependencies
+1. Install the sounddevice package:
+   \`\`\`bash
+   python -m pip install sounddevice
+   \`\`\`
 
+2. Ensure Google Cloud is set up on your Pi:
+   - [Google Cloud setup](https://cloud.google.com/python/docs/setup#linux)
 
+3. Install Google Cloud SDK:
+   - [GCP SDK installation](https://cloud.google.com/sdk/docs/install-sdk#linux)
+   - Make sure to download \`google-cloud-cli-linux-arm.tar.gz\` because Pi is ARM-based.
 
+4. Install MongoDB:
+   \`\`\`bash
+   python -m pip install pymongo
+   \`\`\`
 
+5. Set up ADC:
+   - [Setting up ADC](https://cloud.google.com/docs/authentication/external/set-up-adc)
 
+6. Set volume to a good range:
+   \`\`\`bash
+   amixer set Master 78%
+   \`\`\`
+
+### Running the Application
+1. Run the application:
+   \`\`\`bash
+   python trigger.py
+   \`\`\`
+
+2. To set up auto-start, follow these steps:
+   \`\`\`bash
+   sudo nano /usr/local/bin/autostart.sh
+   \`\`\`
+
+3. Add the following content to \`autostart.sh\`:
+   \`\`\`bash
+   #!/bin/bash
+   cd /home/probe0/audioprobe
+
+   # Configure ALSA defaults
+   echo -e "defaults.pcm.card 1\ndefaults.ctl.card 1" > /etc/asound.conf
+
+   # Ensure user permissions for audio
+   sudo usermod -aG audio $USER
+
+   # Start PulseAudio (if needed)
+   pulseaudio --start
+
+   # Activate the virtual environment
+   source /home/probe0/audioprobe/env/bin/activate
+
+   # Set the SDL audio driver to ALSA
+   export SDL_AUDIODRIVER=alsa
+
+   # Set Google application credentials
+   export GOOGLE_APPLICATION_CREDENTIALS="/home/probe0/audioprobe/crafty-shield-267206-fd4e23b40aa7.json" # Adjust the path as needed
+
+   # Run the trigger script
+   python trigger.py
+   \`\`\`
+
+4. Make the script executable:
+   \`\`\`bash
+   sudo chmod +x /usr/local/bin/autostart.sh
+   \`\`\`
+
+5. Create a systemd service:
+   \`\`\`bash
+   sudo nano /etc/systemd/system/autostart.service
+   \`\`\`
+
+6. Add the following content to \`autostart.service\`:
+   \`\`\`ini
+   [Unit]
+   Description=Run autostart script on network connection
+   After=network-online.target
+
+   [Service]
+   Type=oneshot
+   ExecStart=/usr/local/bin/autostart.sh
+   RemainAfterExit=true
+
+   [Install]
+   WantedBy=network-online.target
+   \`\`\`
+
+7. Enable and start the service:
+   \`\`\`bash
+   sudo systemctl enable autostart.service
+   sudo systemctl start autostart.service
+   \`\`\`
+
+8. Reboot to ensure everything starts correctly:
+   \`\`\`bash
+   sudo reboot
+   \`\`\`
+
+### Notes
+- Make sure to adjust paths and filenames according to your specific setup.
+- Ensure all required dependencies and permissions are correctly set up.
+
+GG (Good Game!)
