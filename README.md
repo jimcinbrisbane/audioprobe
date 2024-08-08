@@ -154,7 +154,7 @@ If accessing via SSH, make sure to set WiFi and username/password before using R
    ```
 
 ### Notes
-- Make sure to adjust paths and filenames according to your specific setup.
-- Ensure all required dependencies and permissions are correctly set up.
+-I experienced problem with PulseAudio service, as it can run usually but cannot be ran via root, sudo, or in a service, this require me to set it up as a system-wide service, so this is what to do
+https://github.com/shivasiddharth/PulseAudio-System-Wide
 
 GG (Good Game!)
