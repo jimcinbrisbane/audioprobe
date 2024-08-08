@@ -157,7 +157,7 @@ If accessing via SSH, make sure to set WiFi and username/password before using R
 -I experienced a problem with PulseAudio service, as it can run usually but cannot be run via root, sudo, or in a service, this requires me to set it up as a system-wide service, so this is what to do
 https://github.com/shivasiddharth/PulseAudio-System-Wide
 after you install the package, put these two lines inside autostart.sh before `python trigger.py`
-systemctl --system enable pulseaudio.service       
-systemctl --system start pulseaudio.service  
+`sudo systemctl --system enable pulseaudio.service`       
+`sudo systemctl --system start pulseaudio.service`
 
 GG (Good Game!)
