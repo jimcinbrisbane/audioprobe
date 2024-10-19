@@ -73,6 +73,32 @@ myclient = pymongo.MongoClient("mongodb+srv://probe0:probe0@audioprobe.yoroiqf.m
 mydb = myclient["audioprobe"]
 mycol = mydb["audioprobe"]
 old_file_name = " "
+from pymongo import MongoClient
+
+# def listen_for_notifications():
+#     try:
+        
+#         # Open a change stream to listen for new messages
+#         change_stream = mycol.watch()
+        
+#         print("Listening for new messages...")
+        
+#         for change in change_stream:
+#             if change["operationType"] == "insert":
+#                 device_id = new_message['probe']
+                
+#                 # Check if the message is from 'probe1' or 'probe0'
+#                 if device_id == 'probe1':
+#                     print(f"New message from probe1: {message}")
+#                     # Add specific action for probe1
+#             else:
+#                 print(f"Change detected of type: {change['operationType']}")
+
+#     except Exception as e:
+#         print(f"Error: {e}")
+
+# # Device listens for notifications and differentiates between devices
+# listen_for_notifications()
 
 import requests
 
